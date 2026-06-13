@@ -46,13 +46,16 @@
   });
 
   /**
-   * Preloader
+   * Preloader — use DOM ready, not window "load" (load waits for every image/font).
    */
   const preloader = document.querySelector('#preloader');
   if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove();
-    });
+    const hide = () => preloader.remove();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', hide, { once: true });
+    } else {
+      hide();
+    }
   }
 
   /**
